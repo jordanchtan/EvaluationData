@@ -10,6 +10,8 @@ import inflect
 # from nltk.stem import LancasterStemmer, WordNetLemmatizer
 import pandas as pd
 import csv
+import glob
+import os
 
 
 def remove_non_ascii(words):
@@ -27,7 +29,7 @@ def process_punctuation(words):
     """Remove punctuation from list of tokenized words"""
     words = words.strip('"')
     words = re.sub(r'[-]', ' ', words)
-    words = re.sub('([.,!?()\'\"])', r' \1 ', words)
+    words = re.sub('([.,!?()#\'\"])', r' \1 ', words)
     words = re.sub('\s{2,}', ' ', words)
     words = words.strip()
     return words
@@ -85,10 +87,23 @@ def normalize(words):
     return words
 
 
-path = r'.\ReactData\FB_react_data.csv'
-df = pd.read_csv(path, encoding='utf16')
+path = r'.\ReactData'
+all_files = glob.glob(os.path.join(path, "*.csv"))
 
-df['name'] = df['name'].apply(lambda x: normalize(x))
+for filename in all_files:
+    df = pd.read_csv(filename, encoding='utf16')
+    df['name'] = df['name'].apply(lambda x: normalize(x))
+    newPath = r'.\ReactDataPre\\' + os.path.basename(filename)
 
-df.to_csv('pre_FB_react_data.csv', index=False,
-          encoding='utf16')
+    df.to_csv(newPath, index=False,
+              encoding='utf16')
+
+    with open(newPath, "r+", encoding="utf16") as csv_file:
+        content = csv_file.read()
+
+    with open(newPath, "w+", encoding="utf16") as csv_file:
+        csv_file.write(content.replace('"', ''))
+
+# rem quotes all
+# no stem, lem if can help
+# see behaviour kl, js on non likes
