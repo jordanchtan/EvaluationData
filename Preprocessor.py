@@ -89,7 +89,8 @@ def normalize(words):
 
 
 path = r'.\ReactData'
-all_files = glob.glob(os.path.join(path, "*.csv"))
+# all_files = glob.glob(os.path.join(path, "*.csv"))
+all_files = glob.glob(os.path.join(path, "7_No_Likes_min_20.csv"))
 
 for filename in all_files:
     df = pd.read_csv(filename, encoding='utf16')
