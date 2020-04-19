@@ -28,6 +28,7 @@ def to_lowercase(words):
 def process_punctuation(words):
     """Remove punctuation from list of tokenized words"""
     words = words.strip('"')
+    words = words.replace(',', '')
     words = re.sub(r'[-]', ' ', words)
     words = re.sub('([.,!?()#\'\"])', r' \1 ', words)
     words = re.sub('\s{2,}', ' ', words)
