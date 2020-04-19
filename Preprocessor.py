@@ -27,8 +27,8 @@ def to_lowercase(words):
 
 def process_punctuation(words):
     """Remove punctuation from list of tokenized words"""
-    words = words.strip('"')
     words = words.replace(',', '')
+    words = words.strip('"')
     words = re.sub(r'[-]', ' ', words)
     words = re.sub('([.,!?()#\'\"])', r' \1 ', words)
     words = re.sub('\s{2,}', ' ', words)
@@ -88,23 +88,23 @@ def normalize(words):
     return words
 
 
-path = r'.\ReactData'
-# all_files = glob.glob(os.path.join(path, "*.csv"))
-all_files = glob.glob(os.path.join(path, "8_No_Likes_min_100.csv"))
+path = r'.\ReactDataCounts'
+all_files = glob.glob(os.path.join(path, "*.csv"))
+# all_files = glob.glob(os.path.join(path, "8_No_Likes_min_100.csv"))
 
 for filename in all_files:
     df = pd.read_csv(filename, encoding='utf16')
     df['name'] = df['name'].apply(lambda x: normalize(x))
-    newPath = r'.\ReactDataPre\\' + os.path.basename(filename)
+    newPath = r'.\ReactDataCountsPre\\' + os.path.basename(filename)
 
     df.to_csv(newPath, index=False,
               encoding='utf16')
 
-    with open(newPath, "r+", encoding="utf16") as csv_file:
-        content = csv_file.read()
+    # with open(newPath, "r+", encoding="utf16") as csv_file:
+    #     content = csv_file.read()
 
-    with open(newPath, "w+", encoding="utf16") as csv_file:
-        csv_file.write(content.replace('"', ''))
+    # with open(newPath, "w+", encoding="utf16") as csv_file:
+    #     csv_file.write(content.replace('"', ''))
 
 # rem quotes all
 # no stem, lem if can help
