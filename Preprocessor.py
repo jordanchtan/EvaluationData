@@ -12,6 +12,7 @@ import pandas as pd
 import csv
 import glob
 import os
+import numpy as np
 
 
 def remove_non_ascii(words):
@@ -30,7 +31,7 @@ def process_punctuation(words):
     words = words.replace(',', '')
     words = words.strip('"')
     words = re.sub(r'[-]', ' ', words)
-    words = re.sub('([.,!?()#\'\"])', r' \1 ', words)
+    words = re.sub('([.,!?():#\'\"])', r' \1 ', words)
     words = re.sub('\s{2,}', ' ', words)
     words = words.strip()
     return words
@@ -88,24 +89,32 @@ def normalize(words):
     return words
 
 
-path = r'.\ReactDataCounts'
+# Preprocess csv
+path = r'.\Corpus'
 all_files = glob.glob(os.path.join(path, "*.csv"))
-# all_files = glob.glob(os.path.join(path, "8_No_Likes_min_100.csv"))
 
 for filename in all_files:
     df = pd.read_csv(filename, encoding='utf16')
     df['name'] = df['name'].apply(lambda x: normalize(x))
-    newPath = r'.\ReactDataCountsPre\\' + os.path.basename(filename)
+    newPath = r'.\CorpusPre\\' + os.path.basename(filename)
 
     df.to_csv(newPath, index=False,
               encoding='utf16')
 
-    # with open(newPath, "r+", encoding="utf16") as csv_file:
-    #     content = csv_file.read()
+# Preprocess csv to text
+path = r'C:\Users\jorda\Desktop\FB-Data\name_msg_desc_links_like_reacts'
+all_files = glob.glob(os.path.join(
+    path, "name_msg_desc_links_like_reacts.csv"))
+# all_files = glob.glob(os.path.join(path, "8_No_Likes_min_100.csv"))
 
-    # with open(newPath, "w+", encoding="utf16") as csv_file:
-    #     csv_file.write(content.replace('"', ''))
+for filename in all_files:
+    cols = ['name']
 
-# rem quotes all
-# no stem, lem if can help
-# see behaviour kl, js on non likes
+    df = pd.read_csv(filename, usecols=cols, encoding='utf16')
+
+    df = df[df['name'].apply(lambda x: isinstance(x, str))]
+
+    df['name'] = df['name'].apply(lambda x: normalize(x))
+    # newPath = r'.\CorpusPre\\' + os.path.basename(filename)
+
+    np.savetxt(r'.\CorpusPre\fb_corpus.txt', df, fmt='%s', encoding='utf16')

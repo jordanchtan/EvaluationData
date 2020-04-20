@@ -23,6 +23,7 @@ df = df[df['name'].apply(lambda x: isinstance(x, str))]
 # df_reacts = df_reacts.div(df_reacts.sum(axis=1), axis=0)
 # df[df_reacts.columns] = df_reacts
 
+
 shuffled_df = df.sample(frac=1).reset_index(drop=True)
 
 shuffled_df.to_csv('./ReactDataCounts/1_Likes.csv',
