@@ -90,31 +90,43 @@ def normalize(words):
 
 
 # Preprocess csv
-path = r'.\Corpus'
+# encoding = 'utf16'
+encoding = 'utf8'
+path = r'.\ExpressData'
 all_files = glob.glob(os.path.join(path, "*.csv"))
+# text_col = 'name'
+text_col = 'text'
+csv_to_txt = False
+
 
 for filename in all_files:
-    df = pd.read_csv(filename, encoding='utf16')
-    df['name'] = df['name'].apply(lambda x: normalize(x))
-    newPath = r'.\CorpusPre\\' + os.path.basename(filename)
+    df = pd.read_csv(filename, encoding=encoding)
+    df[text_col] = df[text_col].apply(lambda x: normalize(x))
+    df[text_col] = df[text_col].apply(lambda x: normalize(x))
+    newPath = r'.\ExpressDataPre\\' + os.path.basename(filename)
 
     df.to_csv(newPath, index=False,
-              encoding='utf16')
+              encoding=encoding)
 
 # Preprocess csv to text
+
+
+if not csv_to_txt:
+    quit()
+
 path = r'C:\Users\jorda\Desktop\FB-Data\name_msg_desc_links_like_reacts'
 all_files = glob.glob(os.path.join(
     path, "name_msg_desc_links_like_reacts.csv"))
 # all_files = glob.glob(os.path.join(path, "8_No_Likes_min_100.csv"))
 
 for filename in all_files:
-    cols = ['name']
+    cols = [text_col]
 
-    df = pd.read_csv(filename, usecols=cols, encoding='utf16')
+    df = pd.read_csv(filename, usecols=cols, encoding=encoding)
 
-    df = df[df['name'].apply(lambda x: isinstance(x, str))]
+    df = df[df[text_col].apply(lambda x: isinstance(x, str))]
 
-    df['name'] = df['name'].apply(lambda x: normalize(x))
+    df[text_col] = df[text_col].apply(lambda x: normalize(x))
     # newPath = r'.\CorpusPre\\' + os.path.basename(filename)
 
-    np.savetxt(r'.\CorpusPre\fb_corpus.txt', df, fmt='%s', encoding='utf16')
+    np.savetxt(r'.\CorpusPre\fb_corpus.txt', df, fmt='%s', encoding=encoding)
