@@ -11,4 +11,4 @@ df = pd.merge(df, meta, on='id',  how='left')
 df = df[df['text'].apply(lambda x: isinstance(x, str))]
 df = df.sample(frac=1).reset_index(drop=True)
 
-df.to_csv('EmoBank_Writer_All.csv', index=False)
+df.to_csv(r'.\ExpressDataPre\EmoBank_Writer_All.csv', index=False)
