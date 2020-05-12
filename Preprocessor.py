@@ -92,7 +92,7 @@ def normalize(words):
 # Preprocess csv
 # encoding = 'utf16'
 encoding = 'utf8'
-path = r'.\AffectiveText'
+path = r'.\FairyTales'
 all_files = glob.glob(os.path.join(path, "*.csv"))
 # text_col = 'name'
 text_col = 'message'
@@ -103,7 +103,7 @@ for filename in all_files:
     df = pd.read_csv(filename, encoding=encoding)
     df[text_col] = df[text_col].apply(lambda x: normalize(x))
     df[text_col] = df[text_col].apply(lambda x: normalize(x))
-    newPath = r'.\AffectiveTextPre\\' + os.path.basename(filename)
+    newPath = r'.\FairyTalesPre\\' + os.path.basename(filename)
 
     df.to_csv(newPath, index=False,
               encoding=encoding)
