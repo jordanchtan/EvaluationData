@@ -12,7 +12,7 @@ df = pd.read_csv(r"C:\Users\jorda\Desktop\FB-Data\name_msg_desc_links_like_react
 df['react_sum'] = df['love_count'] + df['wow_count'] + \
     df['haha_count'] + df['sad_count'] + df['angry_count']
 
-df = df[df['react_sum'] > 100]
+df = df[df['react_sum'] > 25]
 
 df = df.drop('react_sum', axis=1)
 
