@@ -13,7 +13,9 @@ df['react_sum'] = df['love_count'] + df['wow_count'] + \
     df['haha_count'] + df['sad_count'] + df['angry_count']
 
 df = df[df['react_sum'] > 0]
+print(df.shape)
 
+quit()
 df = df.drop('react_sum', axis=1)
 
 df = df[df['name'].apply(lambda x: isinstance(x, str))]
